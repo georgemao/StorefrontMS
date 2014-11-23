@@ -5,23 +5,42 @@
     <title></title>
     <style>
         .spacer{
-            width: 150px;
-            height: 30px;
-            display:block;
+        float:left;
+        margin: 10px 20px;
         }
+
+        body{
+            background: #ececec;
+        }
+
+        #center-content{
+            width: 840px;
+            margin: 0 auto;
+        }
+
     </style>
 </head>
 <body>
 
-my inventory!
+    my inventory!!!!!
+    <div id="content">
 
-<div th:each="car: ${inventory}">
-    <span class="spacer" th:text="${car.vin}">Vin</span>
-    <span class="spacer" th:text="${car.make}">make</span>
-    <span class="spacer" th:text="${car.model}">model</span>
-    <span class="spacer" th:text="${car.color}">color</span>
-    <span class="spacer" th:text="${car.status}">status</span>
-    <span><a href="">Sold/Transfer to Finance</a></span>
-</div>
+        <div id="center-content">
+
+
+        <div th:each="car: ${inventory}" style="line-height:1.5; background:white;">
+            <div class="spacer" th:text="${car.vin}" style="width:100px">Vin</div>
+            <div class="spacer" th:text="${car.make}" style="width:50px">make</div>
+            <div class="spacer" th:text="${car.model}" style="width:50px">model</div>
+            <div class="spacer" th:text="${car.color}" style="width:50px">color</div>
+            <div class="spacer" th:text="${car.status}" style="width:50px">status</div>
+            <div class="spacer" style="width:150px"><a href="" th:href="'/inv/car/sold/'+@{${car.vin}}">Mark as sold</a>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+
+        </div>
+
+    </div>
 </body>
 </html>

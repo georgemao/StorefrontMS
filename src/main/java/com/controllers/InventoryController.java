@@ -1,6 +1,9 @@
 package com.controllers;
 
+import com.Status;
 import com.beans.Car;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,13 +19,26 @@ import java.util.List;
 @Controller
 public class InventoryController {
 
+    @Autowired
+    Environment env;
+
     @RequestMapping("/inventory")
     public String listInventory(Model m){
 
-        System.out.println("in");
+        Car[] c = null;
 
-        RestTemplate restTemplate = new RestTemplate();
-        Car[] c = restTemplate.getForObject("http://localhost:8081/inv/getAllCars", Car[].class);
+        List profile = Arrays.asList(env.getActiveProfiles());
+        if(profile.contains("invms")){
+            RestTemplate restTemplate = new RestTemplate();
+            c = restTemplate.getForObject("http://localhost:8081/inv/getAllCars", Car[].class);
+        }
+        else{
+            c = new Car[2];
+            Car a= new Car("1Yzzzzzzzzzzz", "Tesla", "MS", "Blue", Status.SOLD);
+            Car b= new Car("1Zbbbbbbbbbbb", "Lexus", "RCF", "Black", Status.SOLD);
+            c[0]=a;
+            c[1]=b;
+        }
 
         List<Car> cars = Arrays.asList(c);
         cars.forEach(e -> System.out.println(e));
