@@ -11,35 +11,50 @@
 
         body{
             background: #ececec;
-        }
+            font-family: Lato, helvetica, arial, sans-serif;
+            font-size: 14px;
+            -webkit-font-smoothing: antialiased        }
 
         #center-content{
             width: 840px;
             margin: 0 auto;
         }
 
+        div#car-content:hover{
+            /* Use margin: 10px for all 4 dimensions */
+
+            /* This slides the div to the right 20 px + adds a left highlight border */
+            margin-left:10px;
+            margin-right:-10px;
+            border-left:3px solid #1d98f5;
+
+        }
+
     </style>
 </head>
 <body>
 
-    my inventory!!!!!
     <div id="content">
 
         <div id="center-content">
 
-
-        <div th:each="car: ${inventory}" style="line-height:1.5; background:white;">
-            <div class="spacer" th:text="${car.vin}" style="width:100px">Vin</div>
+        <div id="car-content"  th:each="car: ${inventory}" style="line-height:1.5; background:white; box-shadow: 3px 3px 5px #888888; color: #4c4c4c; transition: all 250ms ease-out; transition-delay: 100ms">
+            <div class="spacer" th:text="${car.vin}" style="width:100px; color: #F4BC00">Vin</div>
             <div class="spacer" th:text="${car.make}" style="width:50px">make</div>
             <div class="spacer" th:text="${car.model}" style="width:50px">model</div>
             <div class="spacer" th:text="${car.color}" style="width:50px">color</div>
             <div class="spacer" th:text="${car.status}" style="width:50px">status</div>
-            <div class="spacer" style="width:150px"><a href="" th:href="'/inv/car/sold/'+@{${car.vin}}">Mark as sold</a>
-            </div>
-            <div style="clear:both"></div>
-        </div>
 
-        </div>
+
+            <div class="spacer" style="width:75px; cursor: pointer">
+                <!-- Set correct action based on car Status -->
+                <a href="" th:href="'/inv/car/sold/'+@{${car.vin}}" th:if="${car.status.statusCode}"  style="color: #1d98f5; font-weight: bold"><img src="/images/done.png" title="Mark as sold"/></a>
+            </div>
+
+            <div style="clear:both"></div>
+        </div> <!-- end car-content -->
+
+        </div> <!-- end center-content -->
 
     </div>
 </body>

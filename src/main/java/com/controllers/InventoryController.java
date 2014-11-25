@@ -35,7 +35,7 @@ public class InventoryController {
         else{
             c = new Car[2];
             Car a= new Car("1Yzzzzzzzzzzz", "Tesla", "MS", "Blue", Status.SOLD);
-            Car b= new Car("1Zbbbbbbbbbbb", "Lexus", "RCF", "Black", Status.SOLD);
+            Car b= new Car("1Zbbbbbbbbbbb", "Lexus", "RCF", "Black", Status.ACTIVE);
             c[0]=a;
             c[1]=b;
         }
