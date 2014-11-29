@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * Created by George.Mao on 11/18/2014.
+ * MVC controller to handle presentation tasks
  */
 
 @Controller
@@ -46,4 +47,5 @@ public class InventoryController {
         m.addAttribute("inventory", cars);
         return "inventory";
     }
+
 }

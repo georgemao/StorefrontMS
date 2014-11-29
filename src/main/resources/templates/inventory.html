@@ -2,18 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title></title>
+    <title>StoreFront MicroService</title>
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
     <style>
         .spacer{
-        float:left;
-        margin: 10px 20px;
+            float:left;
+            margin: 10px 20px;
         }
 
         body{
             background: #ececec;
             font-family: Lato, helvetica, arial, sans-serif;
             font-size: 14px;
-            -webkit-font-smoothing: antialiased        }
+            -webkit-font-smoothing: antialiased
+        }
 
         #center-content{
             width: 840px;
@@ -22,15 +24,40 @@
 
         div#car-content:hover{
             /* Use margin: 10px for all 4 dimensions */
-
             /* This slides the div to the right 20 px + adds a left highlight border */
-            margin-left:10px;
-            margin-right:-10px;
-            border-left:3px solid #1d98f5;
+            //margin-left:10px;
+            //margin-right:-10px;
+            border-left:5px solid #1d98f5;
 
         }
 
     </style>
+    <script>
+        $(document).ready(function(){
+            // Get all links labeled 'cmd' in the car-content area
+            $("#car-content a#cmd").each(function(){
+                // Set the click event
+                $(this).click(function() {
+                   submitIt($(this).attr('data-vin'));
+                });
+            });
+
+            // Submits an ajax request
+            function submitIt(vin) {
+                $.ajax({
+                    url: "http://localhost/api/sellCar?vin="+vin,
+                    cache: false
+                })
+                .done(function (html) {
+                    console.log(html);
+                })
+                .fail(function(error){
+                    console.log(error);
+                });
+            }
+        });
+
+    </script>
 </head>
 <body>
 
@@ -38,21 +65,24 @@
 
         <div id="center-content">
 
-        <div id="car-content"  th:each="car: ${inventory}" style="line-height:1.5; background:white; box-shadow: 3px 3px 5px #888888; color: #4c4c4c; transition: all 250ms ease-out; transition-delay: 100ms">
-            <div class="spacer" th:text="${car.vin}" style="width:100px; color: #F4BC00">Vin</div>
-            <div class="spacer" th:text="${car.make}" style="width:50px">make</div>
-            <div class="spacer" th:text="${car.model}" style="width:50px">model</div>
-            <div class="spacer" th:text="${car.color}" style="width:50px">color</div>
-            <div class="spacer" th:text="${car.status}" style="width:50px">status</div>
+            <!-- Loop -->
+            <div id="car-content"  th:each="car: ${inventory}" style="line-height:1.5; background:white; box-shadow: 3px 3px 5px #888888; color: #4c4c4c; transition: all 250ms ease-out; transition-delay: 100ms">
+                <div class="spacer"  style="width:100px; color: #F4BC00">
+                    <a th:href="'/inv/'+@{${car.vin}}"><span th:text="${car.vin}"></span></a>
+                </div>
+                <div class="spacer" th:text="${car.make}" style="width:50px">make</div>
+                <div class="spacer" th:text="${car.model}" style="width:50px">model</div>
+                <div class="spacer" th:text="${car.color}" style="width:50px">color</div>
+                <div class="spacer" th:text="${car.status}" style="width:50px">status</div>
 
 
-            <div class="spacer" style="width:75px; cursor: pointer">
-                <!-- Set correct action based on car Status -->
-                <a href="" th:href="'/inv/car/sold/'+@{${car.vin}}" th:if="${car.status.statusCode}"  style="color: #1d98f5; font-weight: bold"><img src="/images/done.png" title="Mark as sold"/></a>
-            </div>
+                <div id="car-table" class="spacer" style="width:75px; cursor: pointer">
+                    <!-- Set correct action based on car Status -->
+                    <a th:attr="id='cmd', data-vin=${car.vin}" href="#" th:if="${car.status.statusCode}"  style="color: #1d98f5; font-weight: bold"><img src="/images/done.png" title="Mark as sold"/></a>
+                </div>
 
-            <div style="clear:both"></div>
-        </div> <!-- end car-content -->
+                <div style="clear:both"></div>
+            </div> <!-- end car-content -->
 
         </div> <!-- end center-content -->
 
