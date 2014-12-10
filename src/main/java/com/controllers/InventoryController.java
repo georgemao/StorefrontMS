@@ -2,13 +2,20 @@ package com.controllers;
 
 import com.Status;
 import com.beans.Car;
+import com.utils.CarInterface;
+import com.utils.CarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,6 +29,9 @@ public class InventoryController {
 
     @Autowired
     Environment env;
+
+    @Autowired
+    CarInterface cu;
 
     @RequestMapping("/inventory")
     public String listInventory(Model m){
@@ -43,6 +53,10 @@ public class InventoryController {
 
         List<Car> cars = Arrays.asList(c);
         cars.forEach(e -> System.out.println(e));
+
+        // Testing the Spring managed cache
+        Car notCached = cu.findCar("1Yzzzzzzzzzzz");
+        Car cached = cu.findCar("1Yzzzzzzzzzzz");
 
         m.addAttribute("inventory", cars);
         return "inventory";
