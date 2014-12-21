@@ -2,20 +2,19 @@ package com.controllers;
 
 import com.Status;
 import com.beans.Car;
+import com.beans.CarService;
+import com.beans.CarServiceActive;
 import com.utils.CarInterface;
-import com.utils.CarUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.concurrent.ConcurrentMapCache;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,6 +24,7 @@ import java.util.List;
  */
 
 @Controller
+@Profile("local")
 public class InventoryController {
 
     @Autowired
@@ -33,25 +33,29 @@ public class InventoryController {
     @Autowired
     CarInterface cu;
 
-    @RequestMapping("/inventory")
-    public String listInventory(Model m){
+    @Autowired
+    @Qualifier("carService")
+    CarService cs;
 
-        Car[] c = null;
+    @RequestMapping("/inventory/{type}")
+    public String listInventory(@PathVariable String type, Model m){
 
-        List profile = Arrays.asList(env.getActiveProfiles());
-        if(profile.contains("invms")){
-            RestTemplate restTemplate = new RestTemplate();
-            c = restTemplate.getForObject("http://localhost:8081/inv/getAllCars", Car[].class);
+        System.out.println("Type of listing is: " + type);
+
+        List<Car> cars = null;
+
+        switch(type){
+            case "all":
+                cars = cs.getAllInventory();
+                break;
+            case "sold":
+                cars = cs.getSoldInventory();
+                break;
+            case "active":
+                cars = cs.getActiveInventory();
+                break;
         }
-        else{
-            c = new Car[2];
-            Car a= new Car("1Yzzzzzzzzzzz", "Tesla", "MS", "Blue", Status.SOLD);
-            Car b= new Car("1Zbbbbbbbbbbb", "Lexus", "RCF", "Black", Status.ACTIVE);
-            c[0]=a;
-            c[1]=b;
-        }
 
-        List<Car> cars = Arrays.asList(c);
         cars.forEach(e -> System.out.println(e));
 
         // Testing the Spring managed cache

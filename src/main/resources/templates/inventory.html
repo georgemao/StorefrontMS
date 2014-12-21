@@ -48,8 +48,11 @@
                     url: "http://localhost/api/sellCar?vin="+vin,
                     cache: false
                 })
-                .done(function (html) {
-                    console.log(html);
+                .done(function (result) {
+                    console.log(result);
+                    if(result != 0){
+                        alert('Sold!');
+                    }
                 })
                 .fail(function(error){
                     console.log(error);
@@ -78,7 +81,7 @@
 
                 <div id="car-table" class="spacer" style="width:75px; cursor: pointer">
                     <!-- Set correct action based on car Status -->
-                    <a th:attr="id='cmd', data-vin=${car.vin}" href="#" th:if="${car.status.statusCode}"  style="color: #1d98f5; font-weight: bold"><img src="/images/done.png" title="Mark as sold"/></a>
+                    <a th:attr="id='cmd', data-vin=${car.vin}" href="#" th:if="${car.status.statusCode == 0}"  style="color: #1d98f5; font-weight: bold"><img src="/images/done.png" title="Mark as sold"/></a>
                 </div>
 
                 <div style="clear:both"></div>

@@ -1,19 +1,17 @@
 package com;
 
+import com.beans.CarService;
+import com.beans.CarServiceActive;
+import com.beans.CarServiceLocal;
+import com.configuration.ActiveCondition;
+import com.configuration.LocalCondition;
 import com.utils.CarInterface;
 import com.utils.CarUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
-
-import java.util.Arrays;
+import org.springframework.context.annotation.*;
 
 /**
  * Created by George.Mao on 11/14/2014.
@@ -35,6 +33,8 @@ public class Application {
             System.out.println(beanName);
         }
         */
+
+
     }
 
     // Annotation definition or through app-context.xml, either way @Autowired it for access
@@ -42,6 +42,18 @@ public class Application {
     public CacheManager cacheManager() {
         return new ConcurrentMapCacheManager("cars");
     }*/
+
+    @Bean(name="carService")
+    @Conditional(ActiveCondition.class)
+    public CarService carService(){
+        return new CarServiceActive();
+    }
+
+    @Bean(name="carService")
+    @Conditional(LocalCondition.class)
+     public CarService carServiceLocal(){
+        return new CarServiceLocal();
+    }
 
     @Bean
     public CarInterface carinterface() {
