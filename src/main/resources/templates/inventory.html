@@ -45,7 +45,7 @@
             // Submits an ajax request
             function submitIt(vin) {
                 $.ajax({
-                    url: "http://localhost/api/sellCar?vin="+vin,
+                    url: "http://localhost:8081/inv/sellCar/"+vin,
                     cache: false
                 })
                 .done(function (result) {

@@ -3,7 +3,7 @@ package com.beans;
 import java.util.List;
 
 /**
- * Created by George Mao on 12/21/2014.
+ * Interface for providing services to our Inventory Restful Web Service
  */
 public interface CarService {
 

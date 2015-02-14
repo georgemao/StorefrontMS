@@ -14,7 +14,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
 
 /**
- * Created by George.Mao on 11/14/2014.
+ * Spring Boot Application entry point
  */
 @Configuration
 @EnableCaching
@@ -33,11 +33,9 @@ public class Application {
             System.out.println(beanName);
         }
         */
-
-
     }
 
-    // Annotation definition or through app-context.xml, either way @Autowired it for access
+    // We can define beans through Annotation or through app-context.xml -- then @Autowired it for access
     /*@Bean
     public CacheManager cacheManager() {
         return new ConcurrentMapCacheManager("cars");

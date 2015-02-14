@@ -19,12 +19,10 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by George.Mao on 11/18/2014.
- * MVC controller to handle presentation tasks
+ * Main Spring MVC controller to handle presentation tasks
  */
 
 @Controller
-@Profile("local")
 public class InventoryController {
 
     @Autowired
