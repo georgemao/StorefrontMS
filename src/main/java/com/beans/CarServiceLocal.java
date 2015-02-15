@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * This class implements the Car Service interface to provide a client to the Inventory RS WebService
+ * This class implements the Car Service interface. It simulates the Inventory RS WebService
  * Its loaded only when the Conditional LocalCondition is met
  */
 

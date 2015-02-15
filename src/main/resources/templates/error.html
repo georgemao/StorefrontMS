@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+
+    <h1>You have encountered an error</h1>
+    <p th:if="${url}">
+        <b>Page:</b> <span th:text="${url}">Page URL</span>
+    </p>
+
+    <p th:if="${error}">
+        <b>Error:</b> <span th:text="${error}">Error</span>
+    </p>
+
+
+    <p th:if="${timestamp}">
+        <b>Timestamp:</b> <span th:text="${timestamp}">Error</span>
+    </p>
+
+</body>
+</html>

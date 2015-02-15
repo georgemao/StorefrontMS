@@ -1,21 +1,20 @@
 package com.controllers;
 
-import com.Status;
 import com.beans.Car;
 import com.beans.CarService;
-import com.beans.CarServiceActive;
 import com.utils.CarInterface;
+import com.utils.CommandNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Arrays;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -35,6 +34,12 @@ public class InventoryController {
     @Qualifier("carService")
     CarService cs;
 
+    /**
+     *
+     * @param type
+     * @param m
+     * @return
+     */
     @RequestMapping("/inventory/{type}")
     public String listInventory(@PathVariable String type, Model m){
 
@@ -52,6 +57,8 @@ public class InventoryController {
             case "active":
                 cars = cs.getActiveInventory();
                 break;
+            default:
+               throw new CommandNotFoundException(type + " command not found!");
         }
 
         cars.forEach(e -> System.out.println(e));
@@ -64,4 +71,22 @@ public class InventoryController {
         return "inventory";
     }
 
+    /**
+     * Error handler for this controller only. Responds to NotFoundExceptions
+     * @param req
+     * @param e
+     * @param m
+     * @return a new MAV to present
+     * See: http://spring.io/blog/2013/11/01/exception-handling-in-spring-mvc
+     */
+    @ExceptionHandler(CommandNotFoundException.class)
+    public ModelAndView handleException(HttpServletRequest req, Exception e){
+
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("url", req.getRequestURL());
+        mav.addObject("error", e);
+        mav.setViewName("error");
+
+        return mav;
+    }
 }

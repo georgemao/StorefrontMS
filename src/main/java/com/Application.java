@@ -15,6 +15,8 @@ import org.springframework.context.annotation.*;
 
 /**
  * Spring Boot Application entry point
+ * This application demonstrates a Storefront Spring MVC application deployed as a Spring Boot service
+ * It interacts with the companion Inventory Microservice
  */
 @Configuration
 @EnableCaching

@@ -8,7 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by George Mao on 12/21/2014.
+ * Use the Spring Condition/@Conditional feature to check if the Local profile is loaded
+ * Can accomplish similar objective using the @Profile annotation
  */
 public class LocalCondition implements Condition {
     @Override
